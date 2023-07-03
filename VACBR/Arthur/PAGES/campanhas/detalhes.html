@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Detalhes</title>
+  <!-- font awesome cdn link -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- custom css file link -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+    }
+  
+    .dados-container {
+      max-width: 3000px;
+      width: 90%;
+      margin: 0 auto;
+    }
+  
+    .dados-item {
+      
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: #39393a;
+      border-radius: 10px;
+    }
+  
+    .dados-item h2 {
+      color: #f3e7e7;
+      font-family: 'Roboto', sans-serif;
+      font-weight: 80000;
+      margin-bottom: 10px;
+      text-align: center;
+      font-size: 36px;
+    }
+  
+    .dados-item p {
+      color: #f0ffffde;
+      font-family: 'Roboto', sans-serif;
+      margin-bottom: 5px;
+      font-size: 18px;
+    }
+  
+    .dados-item p.conteudo {
+      font-size: 16px;
+    }
+  
+    .dados-item img {
+      max-width: 100%;
+      margin: 0 auto;
+      display: block;
+      margin-bottom: 10px;
+    }
+  </style>
+  
+</head>
+<header class="header">
+
+  <a href="#" class="logo">
+      <img src="/Arthur/PAGES/images/logo.png" alt="logo">
+  </a>
+
+  <nav class="navbar">
+      <a href="#home">HOME</a>
+      <a href="/Arthur/PAGES/campanhas/dados.html">CAMPANHAS e NOTÍCIAS</a>
+
+  </nav>
+
+  <div class="icons">
+      <div class="fas fa-search" id="search-btn"></div>
+  </div>
+
+  <div class="search-form">
+      <input type="search" id="search-box" placeholder="search here...">
+      <label for="search-box" class="fas fa-search"></label>
+  </div>
+
+  
+</header>
+<body>
+<br><br><br><br><br>
+<div class="dados-container">
+  <h1>Detalhes do Conjunto de Dados</h1>
+
+  <!-- Dados do conjunto selecionado serão exibidos aqui -->
+  <div id="dados-detalhes"></div>
+</div>
+
+
+
+<script>
+  const dadosCadastrados = JSON.parse(localStorage.getItem('dadosCadastrados')) || [];
+  const urlParams = new URLSearchParams(window.location.search);
+  const index = urlParams.get('index');
+  const dadosDetalhesContainer = document.getElementById('dados-detalhes');
+
+  if (index !== null && index < dadosCadastrados.length) {
+    const dadosSelecionados = dadosCadastrados[index];
+
+    const dadosItem = document.createElement('div');
+    dadosItem.classList.add('dados-item');
+
+    const tituloElement = document.createElement('h2');
+    tituloElement.textContent = dadosSelecionados.titulo;
+    dadosItem.appendChild(tituloElement);
+
+    const autorElement = document.createElement('p');
+    autorElement.textContent = 'Autor: ' + dadosSelecionados.autor;
+    dadosItem.appendChild(autorElement);
+
+    const dataElement = document.createElement('p');
+    dataElement.textContent = 'Data de Publicação: ' + dadosSelecionados.data_publicacao;
+    dadosItem.appendChild(dataElement);
+
+    const imagemElement = document.createElement('img');
+    imagemElement.src = dadosSelecionados.imagem;
+    imagemElement.alt = 'Imagem';
+    dadosItem.appendChild(imagemElement);
+
+    const conteudoElement = document.createElement('p');
+    conteudoElement.textContent = dadosSelecionados.conteudo;
+    dadosItem.appendChild(conteudoElement);
+
+    dadosDetalhesContainer.appendChild(dadosItem);
+  } else {
+    const mensagemErro = document.createElement('p');
+    mensagemErro.textContent = 'Nenhum conjunto de dados selecionado.';
+    dadosDetalhesContainer.appendChild(mensagemErro);
+  }
+  
+</script>
+</body>
+</html>

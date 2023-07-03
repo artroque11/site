@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <title>Formulário de Cadastro</title>
+    <link rel="stylesheet" href="cadastro.css">
+  </head>
+  <body>
+    <h1>Formulário de Cadastro</h1>
+    <form id="cadastro-form">
+      <label for="titulo">Título:</label>
+      <input type="text" id="titulo" name="titulo"><br><br>
+
+      <label for="autor">Autor:</label>
+      <input type="text" id="autor" name="autor"><br><br>
+
+      <label for="conteudo">Conteúdo:</label>
+      <textarea id="conteudo" name="conteudo"></textarea><br><br>
+
+      <label for="midia">Mídia:</label>
+      <input type="text" id="midia" name="midia"><br><br>
+
+      <label for="data_publicacao">Data de Publicação:</label>
+      <input type="date" id="data_publicacao" name="data_publicacao"><br><br>
+
+      <label for="imagem">Imagem:</label>
+      <input type="text" id="imagem" name="imagem"><br><br>
+
+      <label for="resumo">Resumo:</label>
+      <textarea id="resumo" name="resumo"></textarea><br><br>
+
+      <input type="submit" value="Cadastrar">
+    </form>
+
+    <h2>Dados cadastrados:</h2>
+    <table id="tabela-dados">
+      <thead>
+        <tr>
+          <th>Título</th>
+          <th>Autor</th>
+          <th>Conteúdo</th>
+          <th>Mídia</th>
+          <th>Data de publicação</th>
+          <th>Imagem</th>
+          <th>Resumo</th>
+        </tr>
+      </thead>
+      <tbody>
+      </tbody>
+    </table>
+
+
+    <script>
+      const form = document.getElementById('cadastro-form');
+      const tabela = document.getElementById('tabela-dados');
+      const tbody = tabela.querySelector('tbody');
+      const dadosArmazenados = localStorage.getItem('dados-cadastrados');
+      let dados = [];
+
+      if (dadosArmazenados) {
+        dados = JSON.parse(dadosArmazenados);
+        for (let i = 0; i < dados.length; i++) {
+          const novaLinha = document.createElement('tr');
+          novaLinha.innerHTML = `
+            <td>${dados[i].titulo}</td>
+            <td>${dados[i].autor}</td>
+            <td>${dados[i].conteudo}</td>
+            <td>${dados[i].midia}</td>
+            <td>${dados[i].data_publicacao}</td>
+            <td>${dados[i].imagem}</td>
+            <td>${dados[i].resumo}</td>
+            <td><button class="btn-excluir" data-index="${i}">Excluir</button></td>
+          `;
+          tbody.appendChild(novaLinha);
+        }
+      }
+
+      form.addEventListener('submit', function(event) {
+        event.preventDefault();
+
+        const titulo = document.getElementById('titulo').value;
+        const autor = document.getElementById('autor').value;
+        const conteudo = document.getElementById('conteudo').value;
+        const midia = document.getElementById('midia').value;
+        const data_publicacao = document.getElementById('data_publicacao').value;
+        const imagem = document.getElementById('imagem').value;
+        const resumo = document.getElementById('resumo').value;
+
+        // cria uma nova linha na tabela com os valores dos campos do formulário
+        const novaLinha = document.createElement('tr');
+        novaLinha.innerHTML = `
+          <td>${titulo}</td>
+          <td>${autor}</td>
+          <td>${conteudo}</td>
+          <td>${midia}</td>
+          <td>${data_publicacao}</td>
+          <td>${imagem}</td>
+          <td>${resumo}</td>
+          <td><button class="btn-excluir">Excluir</button></td>
+        `;
+
+        // adiciona a nova linha à tabela
+        tbody.appendChild(novaLinha);
+
+        // limpa os campos do formulário após o cadastro ser realizado
+        form.reset();
+
+        // salva os dados cadastrados no armazenamento local
+        const dadosCadastrados = JSON.parse(localStorage.getItem('dadosCadastrados')) || [];
+        dadosCadastrados.push({
+          titulo,
+          autor,
+          conteudo,
+          midia,
+          data_publicacao,
+          imagem,
+          resumo
+        });
+        localStorage.setItem('dadosCadastrados', JSON.stringify(dadosCadastrados));
+      });
+
+      // carrega os dados cadastrados previamente na tabela
+      const dadosCadastrados = JSON.parse(localStorage.getItem('dadosCadastrados')) || [];
+      for (const dado of dadosCadastrados) {
+        const novaLinha = document.createElement('tr');
+        novaLinha.innerHTML = `
+          <td>${dado.titulo}</td>
+          <td>${dado.autor}</td>
+          <td>${dado.conteudo}</td>
+          <td>${dado.midia}</td>
+          <td>${dado.data_publicacao}</td>
+          <td>${dado.imagem}</td>
+          <td>${dado.resumo}</td>
+          <td><button class="btn-excluir">Excluir</button></td>
+        `;
+        tbody.appendChild(novaLinha);
+      }
+
+      // adiciona um ouvinte de evento para o botão "Excluir"
+      tabela.addEventListener('click', function(event) {
+        if (event.target.classList.contains('btn-excluir')) {
+          event.target.parentElement.parentElement.remove();
+
+          // remove o dado cadastrado correspondente do armazenamento local
+          const titulo = event.target.parentElement.parentElement.querySelector('td').textContent;
+          const dadosCadastrados = JSON.parse(localStorage.getItem('dadosCadastrados')) || [];
+          const novoArrayDadosCadastrados = dadosCadastrados.filter(dado => dado.titulo !== titulo);
+          localStorage.setItem('dadosCadastrados', JSON.stringify(novoArrayDadosCadastrados));
+        }
+      });
+    </script>
+  </body>
+</html>
+

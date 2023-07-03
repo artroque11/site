@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Campanhas</title>
+  <!-- font awesome cdn link  -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+
+  <!-- custom css file link  -->
+  <link rel="stylesheet" href="css/style.css">
+  <style>
+    body {
+      font-family: 'Noto Sans', sans-serif;
+    }
+
+    .dados-container {
+      max-width: 3000px;
+      width: 90%;
+      margin: 0 auto;
+    }
+
+    .dados-item {
+      margin-bottom: 20px;
+      padding: 20px;
+      background-color: #39393a;
+      border-radius: 10px;
+    }
+
+    .dados-item h2 {
+      color: #f3e7e7;
+      font-weight: 8000;
+      margin-bottom: 10px;
+    }
+
+    .dados-item p {
+      color: #f0ffffde;
+      margin-bottom: 5px;
+    }
+  </style>
+</head>
+<header class="header">
+
+  <a href="#" class="logo">
+      <img src="/Arthur/PAGES/images/logo.png" alt="logo">
+  </a>
+
+  <nav class="navbar">
+      <a href="#home">HOME</a>
+      <a href="/Arthur/PAGES/campanhas/dados.html">CAMPANHAS e NOTÍCIAS</a>
+  </nav>
+
+  <div class="icons">
+      <div class="fas fa-search" id="search-btn"></div>
+  </div>
+
+  <div class="search-form">
+      <input type="search" id="search-box" placeholder="search here...">
+      <label for="search-box" class="fas fa-search"></label>
+  </div>
+
+  
+</header>
+<body>
+  <br><br><br><br><br>
+  <div class="dados-container">
+    <h1>Dados Cadastrados</h1>
+
+    <!-- Dados cadastrados serão adicionados dinamicamente aqui -->
+    <div id="dados-list"></div>
+  </div>
+
+  <script>
+    const dadosCadastrados = JSON.parse(localStorage.getItem('dadosCadastrados')) || [];
+    const dadosListContainer = document.getElementById('dados-list');
+
+    // Percorre os dados cadastrados e cria um item para cada conjunto de dados
+    dadosCadastrados.forEach((dados, index) => {
+      const dadosItem = document.createElement('div');
+      dadosItem.classList.add('dados-item');
+
+      const tituloElement = document.createElement('h2');
+      tituloElement.textContent = dados.titulo;
+      dadosItem.appendChild(tituloElement);
+
+      const autorElement = document.createElement('p');
+      autorElement.textContent = dados.autor;
+      dadosItem.appendChild(autorElement);
+
+      const dataElement = document.createElement('p');
+      dataElement.textContent = dados.data_publicacao;
+      dadosItem.appendChild(dataElement);
+
+      const imagemElement = document.createElement('img');
+      imagemElement.src = dados.imagem;
+      imagemElement.alt = 'Imagem';
+      dadosItem.appendChild(imagemElement);
+
+      const resumoElement = document.createElement('p');
+      resumoElement.textContent = dados.resumo;
+      dadosItem.appendChild(resumoElement);
+
+      const linkElement = document.createElement('a');
+      linkElement.href = `detalhes.html?index=${index}`;
+      linkElement.textContent = 'Ver detalhes';
+      dadosItem.appendChild(linkElement);
+
+      dadosListContainer.appendChild(dadosItem);
+    });
+  </script>
+</body>
+</html>
